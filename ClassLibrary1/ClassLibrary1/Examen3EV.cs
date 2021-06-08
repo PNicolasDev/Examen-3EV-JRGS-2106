@@ -1,72 +1,116 @@
 ﻿using System.Collections.Generic;
 
-namespace Examen3EV_NS
+namespace Examen3EvNamespace
 {
-    public class estNot  // esta clase nos calcula las estadísticas de un conjunto de notas 
+    /// <summary>
+    /// Clase diseñada para el cálculo de un conjunto de notas.
+    /// </summary>
+    public class EstadisticasNotas  
     {
-        public int sus;  // Suspensos
-        public int apr;  // Aprobados
-        public int not;  // Notables
-        public int sbr;  // Sobresalientes
+        //PNICOLAS 1CFSY 2021
+        /// <summary>
+        /// Contiene la cantidad de suspensos.
+        /// </summary>
+        public int suspensos;
+        /// <summary>
+        /// Contiene la cantidad de aprobados.
+        /// </summary>
+        public int aprobados;
+        /// <summary>
+        /// Contiene la cantidad de notables.
+        /// </summary>
+        public int notables;
+        /// <summary>
+        /// Contiene la cantidad de sobresalientes.
+        /// </summary>
+        public int sobresalientes;
 
-        public double media; // Nota media
+        /// <summary>
+        /// La nota media del conjunto de notas aportado.
+        /// </summary>
+        public double notaMedia;
 
-        // Constructor vacío
-        public estNot()
+        /// <summary>
+        /// Constructor vacío de la clase. Inicializa a 0 las variables.
+        /// </summary>
+        public EstadisticasNotas()
         {
-            sus = apr = not = sbr = 0;  // inicializamos las variables
-            media = 0.0;
+            suspensos = aprobados = notables = sobresalientes = 0;  // inicializamos las variables
+            notaMedia = 0.0;
         }
 
-        // Constructor a partir de un array, calcula las estadísticas al crear el objeto
-        public estNot(List<int> listnot)
+        /// <summary>
+        /// Constructor que a partir de un array, calcula las estadísticas al crear el objeto.
+        /// </summary>
+        /// <param name="listaNotas">La lista con las notas aportadas de las que se quiere hacer el cálculo.</param>
+        public EstadisticasNotas(List<int> listaNotas)//PNICOLAS1CFSY
         {
-            media = 0.0;
-
-            for (int i = 0; i < listnot.Count; i++)
+            notaMedia = 0.0;
+            //PNICOLAS 1CFSY2021
+            CalcularNotaMedia(listaNotas);
+        }
+        //PNICOLAS 1CFSY
+        /// <summary>
+        /// Calcula la nota media de un conjunto de notas aportadas.
+        /// </summary>
+        /// <param name="listaNotas">La lista con las notas aportadas de las que se quiere hacer el cálculo.</param>
+        public void CalcularNotaMedia(List<int> listaNotas)
+        {
+            for (int i = 0; i < listaNotas.Count; i++)
             {
-                if (listnot[i] < 5) sus++;              // Por debajo de 5 suspenso
-                else if (listnot[i] > 5 && listnot[i] < 7) apr++;// Nota para aprobar: 5
-                else if (listnot[i] > 7 && listnot[i] < 9) not++;// Nota para notable: 7
-                else if (listnot[i] > 9) sbr++;         // Nota para sobresaliente: 9
+                if (listaNotas[i] < 5)
+                {
+                    suspensos++;
+                }
+                else if (listaNotas[i] >= 5 && listaNotas[i] < 7)
+                {
+                    aprobados++;
+                }
+                else if (listaNotas[i] >= 7 && listaNotas[i] < 9)
+                {
+                    notables++;
+                }
+                else if (listaNotas[i] >= 9)
+                {
+                    sobresalientes++;
+                }
 
-                media = media + listnot[i];
+                notaMedia = notaMedia + listaNotas[i];
             }
-
-            media = media / listnot.Count;
+            notaMedia = notaMedia / listaNotas.Count;
         }
 
-
-        // Para un conjunto de listnot, calculamos las estadísticas
-        // calcula la media y el número de suspensos/aprobados/notables/sobresalientes
-        //
-        // El método devuelve -1 si ha habido algún problema, la media en caso contrario	
-        public double calcEst(List<int> listnot)
-        {                                 
-            media = 0.0;
+        // PNICOLAS 1CFSY
+        /// <summary>
+        /// Calcula las estadísticas para un conjunto de notas.
+        /// </summary>
+        /// <param name="listaNotas">La lista con las notas aportadas de las que se quiere hacer el cálculo.</param>
+        /// <remarks>Si se introduce un conjunto vacío o con notas desbordadas devolverá una exception.</remarks>
+        /// <exception cref="System.ArgumentOutOfRangeException">Con la cadena "Las lista no puede ser vacía." en caso de que pasemos una lista vacía</exception>
+        /// <exception cref="System.ArgumentOutOfRangeException">Con la cadena "Las notas no pueden ser menores que cero ni mayores que 10" si metemos notas mayores que 10 o menores que 0</exception>
+        /// <returns>Un double con la nota media del conjunto.</returns>
+        public double CalcularEstadisticas(List<int> listaNotas) //PNICOLAS1CFSY2021
+        {
+            notaMedia = 0.0;
 
             // TODO: hay que modificar el tratamiento de errores para generar excepciones
             //
-            if (listnot.Count <= 0)  // Si la lista no contiene elementos, devolvemos un error
-                return -1;
-
-            for (int i=0;i<10;i++)
-                if (listnot[i] < 0 || listnot[i] > 10)      // comprobamos que las not están entre 0 y 10 (mínimo y máximo), si no, error
-                return -1;
-
-            for (int i = 0; i < listnot.Count; i++)
+            //PNICOLAS 1CFSY
+            if (listaNotas.Count <= 0)
             {
-                if (listnot[i] < 5) sus++;              // Por debajo de 5 suspenso
-                else if (listnot[i] >= 5 && listnot[i] < 7) apr++;// Nota para aprobar: 5
-                else if (listnot[i] >= 7 && listnot[i] < 9) not++;// Nota para notable: 7
-                else if (listnot[i] > 9) sbr++;         // Nota para sobresaliente: 9
-
-                media = media + listnot[i];
+                throw new System.ArgumentOutOfRangeException("Las lista no puede ser vacía.");
             }
+            //PNICOLAS 1CFSY
+            for (int i = 0; i < listaNotas.Count; i++) //PNICOLAS1CFSY2021
+                if (listaNotas[i] < 0 || listaNotas[i] > 10)
+                {
+                    throw new System.ArgumentOutOfRangeException("Las notas no pueden ser menores que cero ni mayores que 10");
+                }
 
-            media = media / listnot.Count;
+            //PNICOLAS 1CFSY
+            CalcularNotaMedia(listaNotas);
 
-            return media;
+            return notaMedia;
         }
     }
 }
